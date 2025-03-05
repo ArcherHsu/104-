@@ -1,21 +1,21 @@
 ﻿antecedents,consequents,antecedent support,consequent support,support,confidence,lift,representativity,leverage,conviction,zhangs_metric,jaccard,certainty,kulczynski
-"frozenset({'Python', 'Word'})","frozenset({'PowerPoint', 'Tableau'})",0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0
-frozenset({'Power BI'}),"frozenset({'R', 'SQL'})",0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0
-"frozenset({'R', 'GCP', 'SQL'})",frozenset({'Power BI'}),0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0
+frozenset({'GCP'}),"frozenset({'R', 'SQL', 'Power BI'})",0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0
+"frozenset({'R', 'GCP'})","frozenset({'SQL', 'Power BI'})",0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0
 frozenset({'MySQL'}),frozenset({'AWS'}),0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0
 frozenset({'AWS'}),frozenset({'MySQL'}),0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0
-"frozenset({'Python', 'PowerPoint'})","frozenset({'Word', 'Tableau'})",0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0
-"frozenset({'Word', 'Tableau'})","frozenset({'Python', 'PowerPoint'})",0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0
-frozenset({'PL/SQL'}),"frozenset({'R', 'Power BI\u200b'})",0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0
-"frozenset({'R', 'Power BI\u200b'})",frozenset({'PL/SQL'}),0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0
-frozenset({'GCP'}),"frozenset({'R', 'SQL'})",0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0
-"frozenset({'R', 'SQL'})",frozenset({'GCP'}),0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0
-frozenset({'GCP'}),"frozenset({'R', 'Power BI'})",0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0
-frozenset({'Power BI'}),"frozenset({'R', 'GCP'})",0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0
-"frozenset({'R', 'GCP'})",frozenset({'Power BI'}),0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0
-"frozenset({'R', 'Power BI'})",frozenset({'GCP'}),0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0
+frozenset({'Power BI'}),"frozenset({'R', 'SQL'})",0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0
 "frozenset({'R', 'SQL'})",frozenset({'Power BI'}),0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0
-frozenset({'GCP'}),frozenset({'Power BI'}),0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0
-"frozenset({'PowerPoint', 'Tableau'})","frozenset({'Python', 'Word'})",0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0
-frozenset({'GCP'}),"frozenset({'R', 'Power BI', 'SQL'})",0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0
-frozenset({'Power BI'}),"frozenset({'R', 'GCP', 'SQL'})",0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0
+frozenset({'Power BI'}),"frozenset({'SQL', 'GCP'})",0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0
+frozenset({'GCP'}),"frozenset({'SQL', 'Power BI'})",0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0
+"frozenset({'SQL', 'Power BI'})","frozenset({'R', 'GCP'})",0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0
+"frozenset({'GCP', 'Power BI'})","frozenset({'R', 'SQL'})",0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0
+"frozenset({'SQL', 'GCP'})","frozenset({'R', 'Power BI'})",0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0
+"frozenset({'R', 'Power BI'})","frozenset({'SQL', 'GCP'})",0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0
+"frozenset({'R', 'SQL'})","frozenset({'GCP', 'Power BI'})",0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0
+"frozenset({'R', 'SQL', 'Power BI'})",frozenset({'GCP'}),0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0
+"frozenset({'R', 'Power BI'})",frozenset({'GCP'}),0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0
+"frozenset({'SQL', 'Power BI'})",frozenset({'GCP'}),0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0
+"frozenset({'R', 'GCP', 'SQL'})",frozenset({'Power BI'}),0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0
+"frozenset({'SQL', 'GCP'})",frozenset({'Power BI'}),0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0
+"frozenset({'Python', 'PowerPoint'})","frozenset({'Tableau', 'Word'})",0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0
+frozenset({'PL/SQL'}),"frozenset({'Power BI\u200b', 'Python', 'R'})",0.1,0.1,0.1,1.0,10.0,1.0,0.09,inf,0.9999999999999999,1.0,1.0,1.0

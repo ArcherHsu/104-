@@ -238,7 +238,7 @@ def plot_skills_and_categories(df):
         plt.barh(range(len(counts)), counts)
         plt.yticks(range(len(skills)), skills)
         plt.gca().invert_yaxis()
-        plt.title('工作技能需求 Top 20', pad=20, fontsize=14)
+        plt.title('工作工具需求 Top 20', pad=20, fontsize=14)
         plt.xlabel('數量', fontsize=12)
         
         for i, v in enumerate(counts):
@@ -280,7 +280,7 @@ def plot_skills_and_categories(df):
         plt.savefig('各縣市需求數量.png', dpi=300, bbox_inches='tight')
         plt.close()
 
-        # 繪製技能需求圖
+        # 繪製工具需求圖
         plt.figure(figsize=(15, 10))
         tool_counts = Counter()
         for tools in df['擅長工具']:
@@ -293,14 +293,14 @@ def plot_skills_and_categories(df):
         plt.barh(range(len(tool_nums)), tool_nums)
         plt.yticks(range(len(tools)), tools)
         plt.gca().invert_yaxis()
-        plt.title('技能需求 Top 20', pad=20, fontsize=14)
+        plt.title('工具需求 Top 20', pad=20, fontsize=14)
         plt.xlabel('數量', fontsize=12)
         
         for i, v in enumerate(tool_nums):
             plt.text(v, i, f' {v}', va='center')
 
         plt.tight_layout()
-        plt.savefig('技能需求.png', dpi=300, bbox_inches='tight')
+        plt.savefig('工具需求.png', dpi=300, bbox_inches='tight')
         plt.close()
 
         # 繪製工作經歷與薪資分布圖
