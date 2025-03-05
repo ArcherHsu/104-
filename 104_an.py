@@ -238,7 +238,7 @@ def plot_skills_and_categories(df):
         plt.barh(range(len(counts)), counts)
         plt.yticks(range(len(skills)), skills)
         plt.gca().invert_yaxis()
-        plt.title('工作工具需求 Top 20', pad=20, fontsize=14)
+        plt.title('工作技能需求 Top 20', pad=20, fontsize=14)
         plt.xlabel('數量', fontsize=12)
         
         for i, v in enumerate(counts):
