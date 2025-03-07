@@ -382,8 +382,64 @@ def process_jobs():
         # 執行薪資十分位數分析
         analyze_salary_percentiles(df)
 
+        
+        # 執行學歷占比分析
+        analyze_education_ratio(df)
+
     except Exception as e:
         print(f"處理錯誤：{str(e)}")
+
+def analyze_education_ratio(df):
+    """分析學歷占比分布"""
+    try:
+        # 設置中文字體
+        plt.rcParams['font.sans-serif'] = ['Microsoft JhengHei']
+        plt.rcParams['axes.unicode_minus'] = False
+
+        # 學歷排序順序
+        edu_order = ['不拘', '高中', '專科', '大學', '碩士', '博士']
+        
+        # 計算各學歷的數量
+        edu_counts = df['學歷要求'].value_counts()
+        
+        # 計算總數
+        total = edu_counts.sum()
+        
+        # 計算比例
+        edu_ratio = edu_counts / total * 100
+        
+        # 按照指定順序排序
+        edu_ratio = edu_ratio.reindex(edu_order)
+        
+        # 創建圖表
+        plt.figure(figsize=(12, 6))
+        
+        # 繪製柱狀圖
+        bars = plt.bar(range(len(edu_ratio)), edu_ratio)
+        
+        # 在柱子上標示百分比和樣本數
+        for i, (ratio, count) in enumerate(zip(edu_ratio, edu_counts.reindex(edu_order))):
+            plt.text(i, ratio, f'{ratio:.1f}%\nn={count}', 
+                    ha='center', va='bottom')
+        
+        # 設置標題和標籤
+        plt.title('學歷占比', pad=20, fontsize=14)
+        plt.xlabel('學歷', fontsize=12)
+        plt.ylabel('占比 (%)', fontsize=12)
+        
+        # 設置X軸刻度
+        plt.xticks(range(len(edu_ratio)), edu_order)
+        
+        # 調整布局
+        plt.tight_layout()
+        
+        # 保存圖片
+        plt.savefig('學歷占比.png', dpi=300, bbox_inches='tight')
+        plt.close()
+
+    except Exception as e:
+        print(f"學歷占比分析錯誤：{str(e)}")
+
 
 if __name__ == "__main__":
     process_jobs()
