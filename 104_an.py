@@ -5,6 +5,9 @@ from collections import Counter
 from mlxtend.frequent_patterns import apriori
 from mlxtend.frequent_patterns import association_rules
 import warnings
+import jieba
+import wordcloud
+from PIL import Image
 warnings.filterwarnings('ignore')
 
 def extract_city(location):
@@ -358,6 +361,74 @@ def plot_skills_and_categories(df):
     except Exception as e:
         print(f"繪圖錯誤：{str(e)}")
 
+def analyze_job_content_wordcloud(df):
+    """分析工作內容文字雲"""
+    try:
+        # 設置中文字體
+        plt.rcParams['font.sans-serif'] = ['Microsoft JhengHei']
+        plt.rcParams['axes.unicode_minus'] = False
+        
+        # 載入停用詞和字典
+        global stopwords
+        stopwords = [k.strip() for k in open('停用詞.txt', encoding='utf-8') if k.strip() != '']
+        jieba.set_dictionary('dict.txt.big')
+        
+        # 將工具的專有名詞加入自定義詞
+        tool_counts = Counter()
+        for tools in df['擅長工具']:
+            if isinstance(tools, str) and tools != '未提供':
+                for tool in tools.split(';'):
+                    tool_counts[tool.strip()] += 1
+                    jieba.add_word(tool.strip())
+        
+        # 清理文本並斷詞
+        job_content = df['工作內容']
+        job_content_cut = [
+            word for sent in job_content 
+            for word in set(text_cut(sent)) 
+            if word not in '數據分析'
+        ]
+        job_content_cut_cnt = Counter(job_content_cut)
+        
+        # 生成文字雲，使用系統字體
+        wc = wordcloud.WordCloud(
+            font_path='msyh.ttc',  # 使用微軟雅黑字體，Windows系統通常都有
+            max_words=40,
+            max_font_size=180,
+            background_color='white',
+            width=800, height=600,
+        )
+        wc.generate_from_frequencies(job_content_cut_cnt)
+        
+        # 創建圖表
+        plt.figure(figsize=(10, 8))
+        plt.imshow(wc)
+        plt.axis('off')
+        
+        # 保存圖片
+        plt.savefig('工作內容文字雲.png', dpi=300, bbox_inches='tight')
+        plt.close()
+
+    except Exception as e:
+        print(f"文字雲分析錯誤：{str(e)}")
+        # 打印更詳細的錯誤信息
+        import traceback
+        print(traceback.format_exc())
+
+def clean_Punctuation(text):
+    """清除標點符號"""
+    text = re.sub(r'[^\w\s]', '', text)
+    text = text.replace('\n', '').replace('\r', '').replace('\t', '').replace(' ', '').replace('[', '').replace(']', '')
+    return text
+
+def text_cut(sentence):
+    """斷詞並去除停用詞"""
+    sentence_cut = [
+        word for word in jieba.lcut(clean_Punctuation(sentence)) 
+        if word not in stopwords
+    ]
+    return sentence_cut
+
 def process_jobs():
     try:
         # 讀取原始 CSV 檔案
@@ -385,6 +456,9 @@ def process_jobs():
         
         # 執行學歷占比分析
         analyze_education_ratio(df)
+
+        # 執行文字雲分析
+        analyze_job_content_wordcloud(df)
 
     except Exception as e:
         print(f"處理錯誤：{str(e)}")
