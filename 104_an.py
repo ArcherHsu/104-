@@ -8,6 +8,8 @@ import warnings
 import jieba
 import wordcloud
 from PIL import Image
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.decomposition import LatentDirichletAllocation
 warnings.filterwarnings('ignore')
 
 def extract_city(location):
@@ -429,40 +431,6 @@ def text_cut(sentence):
     ]
     return sentence_cut
 
-def process_jobs():
-    try:
-        # 讀取原始 CSV 檔案
-        df = pd.read_csv('104_jobs.csv', encoding='utf-8-sig')
-        
-        # 轉換工作地點為城市名稱
-        df['工作地點'] = df['工作地點'].apply(extract_city)
-        
-        # 轉換薪資為月薪平均值
-        df['薪資範圍'] = df['薪資範圍'].apply(convert_salary_to_monthly_avg)
-        
-        # 儲存新的 CSV 檔案
-        df.to_csv('104_re.csv', encoding='utf-8-sig', index=False)
-        print("已成功創建新的 CSV 檔案：104_re.csv")
-        
-        # 呼叫繪圖函數
-        plot_skills_and_categories(df)
-        
-        # 執行工具關聯性分析
-        analyze_tool_associations(df)
-        
-        # 執行薪資十分位數分析
-        analyze_salary_percentiles(df)
-
-        
-        # 執行學歷占比分析
-        analyze_education_ratio(df)
-
-        # 執行文字雲分析
-        analyze_job_content_wordcloud(df)
-
-    except Exception as e:
-        print(f"處理錯誤：{str(e)}")
-
 def analyze_education_ratio(df):
     """分析學歷占比分布"""
     try:
@@ -514,6 +482,84 @@ def analyze_education_ratio(df):
     except Exception as e:
         print(f"學歷占比分析錯誤：{str(e)}")
 
+def analyze_lda_topics(df):
+    """使用LDA進行主題分析"""
+    try:
+        # 處理工作內容文本
+        df['工作內容2'] = df['工作內容'].apply(lambda x: ' '.join(text_cut(str(x))))
+        
+        # 創建文檔詞頻矩陣
+        tf_vectorizer = CountVectorizer(
+            strip_accents='unicode',
+            max_df=0.5,
+            min_df=10
+        )
+        tf = tf_vectorizer.fit_transform(df['工作內容2'])
+        
+        # 訓練LDA模型
+        lda = LatentDirichletAllocation(
+            n_components=3,
+            max_iter=50,
+            learning_method='online',
+            learning_offset=50.,
+            random_state=0
+        )
+        lda.fit(tf)
+        
+        # 獲取特徵名稱
+        tf_feature_names = tf_vectorizer.get_feature_names_out()
+        
+        # 打印主題
+        with open('工作內容主題分析.txt', 'w', encoding='utf-8') as f:
+            for topic_idx, topic in enumerate(lda.components_):
+                top_words = [tf_feature_names[i] for i in topic.argsort()[:-21:-1]]
+                f.write(f"主題 {topic_idx + 1}:\n")
+                f.write(" ".join(top_words))
+                f.write("\n\n")
+        
+        print("已完成LDA主題分析，結果已保存到 工作內容主題分析.txt")
+        
+    except Exception as e:
+        print(f"LDA主題分析錯誤：{str(e)}")
+        import traceback
+        print(traceback.format_exc())
+
+def process_jobs():
+    try:
+        # 讀取原始 CSV 檔案
+        df = pd.read_csv('104_jobs.csv', encoding='utf-8-sig')
+        
+        # 轉換工作地點為城市名稱
+        df['工作地點'] = df['工作地點'].apply(extract_city)
+        
+        # 轉換薪資為月薪平均值
+        df['薪資範圍'] = df['薪資範圍'].apply(convert_salary_to_monthly_avg)
+        
+        # 儲存新的 CSV 檔案
+        df.to_csv('104_re.csv', encoding='utf-8-sig', index=False)
+        print("已成功創建新的 CSV 檔案：104_re.csv")
+        
+        # 呼叫繪圖函數
+        plot_skills_and_categories(df)
+        
+        # 執行工具關聯性分析
+        analyze_tool_associations(df)
+        
+        # 執行薪資十分位數分析
+        analyze_salary_percentiles(df)
+
+        
+        # 執行學歷占比分析
+        analyze_education_ratio(df)
+
+        # 執行文字雲分析
+        analyze_job_content_wordcloud(df)
+
+        # 執行LDA主題分析
+        analyze_lda_topics(df)
+
+    except Exception as e:
+        print(f"處理錯誤：{str(e)}")
 
 if __name__ == "__main__":
     process_jobs()
