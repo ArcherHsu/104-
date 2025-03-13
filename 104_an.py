@@ -446,11 +446,16 @@ def analyze_education_ratio(df):
         plt.rcParams['font.sans-serif'] = ['Microsoft JhengHei']
         plt.rcParams['axes.unicode_minus'] = False
 
-        # 學歷排序順序
-        edu_order = ['不拘', '高中', '專科', '大學', '碩士', '博士']
+        # 學歷排序順序（從低到高）
+        edu_order = ['高中', '專科', '大學', '碩士', '博士', '不拘']
         
         # 計算各學歷的數量
         edu_counts = df['學歷要求'].value_counts()
+        
+        # 確保所有學歷類別都存在
+        for edu in edu_order:
+            if edu not in edu_counts:
+                edu_counts[edu] = 0
         
         # 計算總數
         total = edu_counts.sum()
@@ -465,20 +470,28 @@ def analyze_education_ratio(df):
         plt.figure(figsize=(12, 6))
         
         # 繪製柱狀圖
-        bars = plt.bar(range(len(edu_ratio)), edu_ratio)
+        x = range(len(edu_order))
+        bars = plt.bar(x, edu_ratio)
         
         # 在柱子上標示百分比和樣本數
         for i, (ratio, count) in enumerate(zip(edu_ratio, edu_counts.reindex(edu_order))):
-            plt.text(i, ratio, f'{ratio:.1f}%\nn={count}', 
-                    ha='center', va='bottom')
+            if not pd.isna(ratio):  # 確保數值不是 NaN
+                plt.text(i, ratio, f'{ratio:.1f}%\nn={int(count)}', 
+                        ha='center', va='bottom')
         
         # 設置標題和標籤
-        plt.title('學歷占比', pad=20, fontsize=14)
-        plt.xlabel('學歷', fontsize=12)
+        plt.title('學歷要求分布', pad=20, fontsize=14)
+        plt.xlabel('學歷要求', fontsize=12)
         plt.ylabel('占比 (%)', fontsize=12)
         
         # 設置X軸刻度
-        plt.xticks(range(len(edu_ratio)), edu_order)
+        plt.xticks(x, edu_order, rotation=0)
+        
+        # 設置Y軸範圍，確保有足夠空間顯示標籤
+        plt.ylim(0, max(edu_ratio) * 1.2)
+        
+        # 添加網格線以便於閱讀
+        plt.grid(True, axis='y', linestyle='--', alpha=0.3)
         
         # 調整布局
         plt.tight_layout()
@@ -489,6 +502,8 @@ def analyze_education_ratio(df):
 
     except Exception as e:
         print(f"學歷占比分析錯誤：{str(e)}")
+        import traceback
+        print(traceback.format_exc())
 
 def analyze_lda_topics(df):
     """使用LDA進行主題分析"""
