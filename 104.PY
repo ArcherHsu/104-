@@ -86,7 +86,7 @@ def scrape_104():
         page = browser.new_page()
         all_jobs = []
         
-        for page_num in range(1, 2):
+        for page_num in range(1, 21):
             url = f"https://www.104.com.tw/jobs/search/?keyword=數據分析師&page={page_num}"
             print(f"\n正在訪問第 {page_num} 頁...")
             page.goto(url, timeout=60000)

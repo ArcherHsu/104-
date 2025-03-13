@@ -363,6 +363,24 @@ def plot_skills_and_categories(df):
     except Exception as e:
         print(f"繪圖錯誤：{str(e)}")
 
+def clean_Punctuation(text):
+    """清除標點符號"""
+    if not isinstance(text, str):
+        return str(text)
+    text = re.sub(r'[^\w\s]', '', text)
+    text = text.replace('\n', '').replace('\r', '').replace('\t', '').replace(' ', '').replace('[', '').replace(']', '')
+    return text
+
+def text_cut(sentence):
+    """斷詞並去除停用詞"""
+    if not isinstance(sentence, str):
+        sentence = str(sentence)
+    sentence_cut = [
+        word for word in jieba.lcut(clean_Punctuation(sentence)) 
+        if word not in stopwords
+    ]
+    return sentence_cut
+
 def analyze_job_content_wordcloud(df):
     """分析工作內容文字雲"""
     try:
@@ -384,12 +402,16 @@ def analyze_job_content_wordcloud(df):
                     jieba.add_word(tool.strip())
         
         # 清理文本並斷詞
-        job_content = df['工作內容']
-        job_content_cut = [
-            word for sent in job_content 
-            for word in set(text_cut(sent)) 
-            if word not in '數據分析'
-        ]
+        job_content = df['工作內容'].fillna('')  # 將 NaN 值替換為空字符串
+        job_content_cut = []
+        for sent in job_content:
+            try:
+                words = set(text_cut(sent))
+                job_content_cut.extend([w for w in words if w not in '數據分析'])
+            except Exception as e:
+                print(f"處理文本時出錯：{str(e)}")
+                continue
+                
         job_content_cut_cnt = Counter(job_content_cut)
         
         # 生成文字雲，使用系統字體
@@ -416,20 +438,6 @@ def analyze_job_content_wordcloud(df):
         # 打印更詳細的錯誤信息
         import traceback
         print(traceback.format_exc())
-
-def clean_Punctuation(text):
-    """清除標點符號"""
-    text = re.sub(r'[^\w\s]', '', text)
-    text = text.replace('\n', '').replace('\r', '').replace('\t', '').replace(' ', '').replace('[', '').replace(']', '')
-    return text
-
-def text_cut(sentence):
-    """斷詞並去除停用詞"""
-    sentence_cut = [
-        word for word in jieba.lcut(clean_Punctuation(sentence)) 
-        if word not in stopwords
-    ]
-    return sentence_cut
 
 def analyze_education_ratio(df):
     """分析學歷占比分布"""
