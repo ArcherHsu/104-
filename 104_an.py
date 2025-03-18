@@ -192,7 +192,7 @@ def analyze_tool_associations(df):
         table.scale(1.2, 1.5)
         
         # 設置標題
-        plt.title('工具關聯規則 Top 20', pad=20, fontsize=14)
+        plt.title('工具關聯規則', pad=20, fontsize=14)
         
         # 隱藏座標軸
         plt.axis('off')
@@ -293,16 +293,24 @@ def plot_skills_and_categories(df):
                 for tool in tools.split(';'):
                     tool_counts[tool.strip()] += 1
         
+        # 取前20名工具
         top_tools = tool_counts.most_common(20)
         tools, tool_nums = zip(*top_tools)
-        plt.barh(range(len(tool_nums)), tool_nums)
+        
+        # 計算總數和百分比
+        total_tools = sum(tool_nums)
+        tool_percentages = [count/total_tools*100 for count in tool_nums]
+        
+        # 繪製水平條形圖
+        plt.barh(range(len(tool_percentages)), tool_percentages)
         plt.yticks(range(len(tools)), tools)
         plt.gca().invert_yaxis()
         plt.title('工具需求 Top 20', pad=20, fontsize=14)
-        plt.xlabel('數量', fontsize=12)
+        plt.xlabel('占比 (%)', fontsize=12)
         
-        for i, v in enumerate(tool_nums):
-            plt.text(v, i, f' {v}', va='center')
+        # 在條形圖右側標示百分比和樣本數
+        for i, (percentage, count) in enumerate(zip(tool_percentages, tool_nums)):
+            plt.text(percentage, i, f' {percentage:.1f}%\nn={count}', va='center')
 
         plt.tight_layout()
         plt.savefig('工具需求.png', dpi=300, bbox_inches='tight')
